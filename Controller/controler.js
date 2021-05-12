@@ -24,7 +24,7 @@ module.exports.api = (req, res) => {
     if (req.body.problem === undefined || req.body.pattern === undefined) {
         console.log("no");
         const errors = validationResult(req);
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ message: "invalid parameters" });
     } else {
         console.log("yes");
 
@@ -56,8 +56,8 @@ module.exports.api = (req, res) => {
 
 // check validation
 function inputValidation(req, res) {
-    body('problem', 'Please provide numeric value').isNumeric().isLength({ min: 1 }).isArray();
-    body('pattern', 'Please provide valid pattern').isNumeric().isLength({ min: 1 });
+    check('problem', 'Please provide numeric value').isNumeric().isLength({ min: 1 }).isArray();
+    check('pattern', 'Please provide valid pattern').isNumeric().isLength({ min: 1 });
 
     const errors = validationResult(req);
     return errors;
@@ -133,14 +133,22 @@ function third(req, res) {
 function forth(req, res) {
     const errors = inputValidation(req, res);
     let number = req.body.problem;
-    console.log("4");
+    console.log("sdf", typeof (number));
+
+    // check the input typ
+    if (!Number.isInteger(number) && Number.isInteger(req.body.pattern)) {
+        return res.status(422).send({
+            message: "Please provide only number"
+        });
+    }
     let response = {};
+
+    // error handle
     if (!errors.isEmpty()) {
         response.success = false;
         response.error = errors;
         return res.status(422).send(response);
     } else {
-        console.log("forth else");
         let arr = [];
         let i = 0;
         let revbinary = "";
@@ -168,7 +176,6 @@ function forth(req, res) {
 // check palindrome
 function palindrome(number) {
 
-    console.log("sdfb");
     let len = number.length;
     let mid = Math.floor(len / 2);
 
@@ -193,9 +200,8 @@ function defaultVal(req, res) {
         return res.status(422).send(response);
     }
 
-
     response.success = false;
-    response.withMessage = 'Please provide one valid problem statements (Eg => 1,2,3 or 4)'
+    response.withMessage = 'Please provide one valid problem statements in numeric format (Eg => 1,2,3 or 4)'
     return res.status(422).send(response);
 
 }
