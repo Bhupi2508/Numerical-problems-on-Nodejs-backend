@@ -27,9 +27,7 @@ module.exports.api = (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     } else {
         console.log("yes");
-        // check('problem', 'Please provide numeric value').isNumeric().isLength({ min: 1 }).isArray();
-        // check('pattern', 'Please provide valid pattern').isNumeric().isLength({ min: 1 });
-        const errors = validationResult(req);
+
         // if (!errors.isEmpty()) {
         //     return res.status(422).json({ errors: errors.array() })
         //   }
@@ -37,51 +35,76 @@ module.exports.api = (req, res) => {
 
         switch (req.body.pattern) {
             case 1:
-                first(req, res, errors);
+                first(req, res);
                 break;
             case 2:
-                second(req, res, errors);
+                second(req, res);
                 break;
             case 3:
-                third(req, res, errors);
+                third(req, res);
                 break;
             case 4:
-                forth(req, res, errors);
+                forth(req, res);
                 break;
             default:
-                defaultVal(req, res, errors);
+                defaultVal(req, res);
                 break;
         }
     }
 };
 
 
+// check validation
+function inputValidation(req, res) {
+    body('problem', 'Please provide numeric value').isNumeric().isLength({ min: 1 }).isArray();
+    body('pattern', 'Please provide valid pattern').isNumeric().isLength({ min: 1 });
+
+    const errors = validationResult(req);
+    return errors;
+}
+
+
 // first problem
-function first(req, res, errors) {
+function first(req, res) {
+    const errors = inputValidation(req, res);
     console.log("1");
     let odd = [];
     let even = [];
 
     var response = {};
-    if (errors) {
+    if (!errors.isEmpty()) {
         console.log("errohai");
         response.success = false;
         response.error = errors;
         return res.status(422).send(response);
     } else {
         let arrayData = req.body.problem;
-        arrayData.array.forEach(element => {
-            console.log("element ", element);
+        arrayData.map(element => {
+            // console.log("element ", element);
+            if (element % 2 !== 0 || element === 1) {
+                odd.push(element);
+            } else {
+                even.push(element);
+            }
         });
+
+        for (let i = 0; i < odd.length; i++) {
+            let oddSort;
+            oddSort = odd[i];
+
+        }
+        console.log(`${odd} and ${even}`);
+        return true
     }
 }
 
 
 // second problem
-function second(req, res, errors) {
+function second(req, res) {
+    const errors = inputValidation(req, res);
     console.log("2");
     var response = {};
-    if (errors) {
+    if (!errors.isEmpty()) {
         response.success = false;
         response.error = errors;
         return res.status(422).send(response);
@@ -92,10 +115,11 @@ function second(req, res, errors) {
 
 
 // third problem
-function third(req, res, errors) {
+function third(req, res) {
+    const errors = inputValidation(req, res);
     console.log("3");
     var response = {};
-    if (errors) {
+    if (!errors.isEmpty()) {
         response.success = false;
         response.error = errors;
         return res.status(422).send(response);
@@ -106,25 +130,64 @@ function third(req, res, errors) {
 
 
 // forth problem
-function forth(req, res, errors) {
+function forth(req, res) {
+    const errors = inputValidation(req, res);
+    let number = req.body.problem;
     console.log("4");
-    var response = {};
-    if (errors) {
+    let response = {};
+    if (!errors.isEmpty()) {
         response.success = false;
         response.error = errors;
         return res.status(422).send(response);
     } else {
-        console.log("ok");
+        console.log("forth else");
+        let arr = [];
+        let i = 0;
+        let revbinary = "";
+        /*
+        Condition for Binary element
+        */
+        while (number > 0) {
+            arr[i] = number % 2;
+            revbinary = arr[i] + revbinary;
+            number = Math.floor(number / 2);
+            i++
+        } while (revbinary.length < 7) {
+            revbinary = '0' + revbinary;
+        }
+
+        // check palindrome
+        let palCheck = palindrome(revbinary);
+        const result = `${revbinary}, ${palCheck ? 'Yes' : 'NO'}`;
+        return res.status(200).send({
+            message: result
+        });
     }
+}
+
+// check palindrome
+function palindrome(number) {
+
+    console.log("sdfb");
+    let len = number.length;
+    let mid = Math.floor(len / 2);
+
+    for (let i = 0; i < mid; i++) {
+        if (number[i] !== number[len - 1 - i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 
 // default
-function defaultVal(req, res, errors) {
+function defaultVal(req, res) {
+    const errors = inputValidation(req, res);
     console.log("default");
     // create a object which will attached all the values
     var response = {};
-    if (errors) {
+    if (!errors.isEmpty()) {
         response.success = false;
         response.error = errors;
         return res.status(422).send(response);
