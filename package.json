@@ -4,7 +4,7 @@
   "description": "create api for multiple numerical problems",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha TestCases/test.js || true",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/Bhupi2508/Numerical-problems-on-Nodejs-backend#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-validator": "^6.11.1",
     "http": "0.0.1-security",
-    "nodemon": "^2.0.7"
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }

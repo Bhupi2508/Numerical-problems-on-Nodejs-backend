@@ -10,9 +10,6 @@
  *  @since          : 15-may-2021
  *
  ******************************************************************************/
-
-const e = require("express");
-
 // single api
 module.exports.api = (req, res) => {
 
@@ -60,7 +57,6 @@ function first(req, res) {
         });
     } else {
         arrayData.map(element => {
-            // console.log("element ", element);
             if (element % 2 !== 0 || element === 1) {
                 odd.push(element);
             } else {
@@ -72,7 +68,7 @@ function first(req, res) {
         const oddSort = sortingData(odd);
         const evenSort = sortingData(even);
         const final = evenSort.concat(oddSort)
-        return res.status(400).send({
+        return res.status(200).send({
             message: final,
             status: 200,
             problem: "Odd vs even"
@@ -99,8 +95,6 @@ function second(req, res) {
 
         for (let i = 0; i < data.length; i++) {
             for (let j = (i + 1); j <= (i + 1); j++) {
-                console.log(data[i]);
-                console.log(data[j]);
                 if (data[i] === 0 && data[j] !== 0) {
                     array.push(data[i])
                 }

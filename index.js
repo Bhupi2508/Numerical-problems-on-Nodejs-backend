@@ -14,8 +14,6 @@
 required files
 */
 const express = require('express');
-const { nextTick } = require('process');
-const router = require('./Route/route');
 const app = express();
 const route = require('./Route/route')
 
@@ -37,7 +35,7 @@ app.use('/', route);
 // Invalid route
 app.use(function (req, res) {
     // Invalid request
-    res.json({
+    res.status(404).send({
         message: 'API is invalid or does not exist',
         status: 404
     });
