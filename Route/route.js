@@ -16,7 +16,7 @@ const router = express.Router();
 const mailControler = require('../Controller/controler');
 
 
-// find the specific path
+// find the route and then sent to the controller
 router.post('/api', mailControler.api)
 
 

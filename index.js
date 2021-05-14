@@ -7,13 +7,15 @@
  *  @overview       : Get the solution based on inputs
  *  @author         : Bhupendra Singh <bhupendrasingh.ec18@gmail.com>
  *  @version        : 1.0
- *  @since          : 11-may-2021
+ *  @since          : 15-may-2021
  *
  ******************************************************************************/
 /*
 required files
 */
 const express = require('express');
+const { nextTick } = require('process');
+const router = require('./Route/route');
 const app = express();
 const route = require('./Route/route')
 
@@ -31,9 +33,20 @@ app.use(express.json());
 // route middlewares
 app.use('/', route);
 
-const port = process.env.port
+
+// Invalid route
+app.use(function (req, res) {
+    // Invalid request
+    res.json({
+        message: 'API is invalid or does not exist',
+        status: 404
+    });
+});
+
+
+const port = process.env.port;
 // Server will be running on given port
 server.listen(port, () => {
-    console.log(`servere is running on port => ${port}`)
+    console.log(`servere is running on ${port} port`)
 });
 

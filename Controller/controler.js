@@ -7,7 +7,7 @@
  *  @overview       : control the flow of api
  *  @author         : Bhupendra Singh <bhupendrasingh.ec18@gmail.com>
  *  @version        : 1.0
- *  @since          : 11-may-2021
+ *  @since          : 15-may-2021
  *
  ******************************************************************************/
 
@@ -166,7 +166,7 @@ function forth(req, res) {
     // check the input validations
     if (!Number.isInteger(number) && Number.isInteger(req.body.problem)) {
         return res.status(400).send({
-            message: "Please provide only number not in array",
+            message: "Pattern should be Number",
             status: 400
         });
     } else {
@@ -200,16 +200,7 @@ function forth(req, res) {
 
 // default pattern
 function defaultVal(req, res) {
-    const errors = inputValidation(req, res);
-
-    // create a object which will attached all the values
     let response = {};
-    if (!errors.isEmpty()) {
-        response.success = false;
-        response.error = errors;
-        return res.status(500).send(response);
-    }
-
     response.status = 200;
     response.success = false;
     response.withMessage = 'Please provide one valid problem statements in numeric format (Eg => 1,2,3 or 4)'
