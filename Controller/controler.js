@@ -10,18 +10,15 @@
  *  @since          : 11-may-2021
  *
  ******************************************************************************/
-/*
-required files
-*/
-const { body, validationResult } = require('express-validator');
 
+const e = require("express");
 
 // single api
 module.exports.api = (req, res) => {
 
     // when the request has invalid parameters or when the request has missing required parameters
     if (req.body.problem === undefined || req.body.pattern === undefined) {
-        return res.status(400).json({ message: "invalid parameters" });
+        return res.status(400).json({ message: "invalid parameters", status: 400 });
 
     } else {
         switch (req.body.problem) {
@@ -45,21 +42,15 @@ module.exports.api = (req, res) => {
 };
 
 
-// Odd vs. even
-function inputValidation(req, res) {
-    body('problem', 'Email is not valid').isEmail();
-    body('pattern', 'Email is not valid').isEmail();
-    const errors = validationResult(req);
-    return errors;
-}
-
 
 // Odd vs. even
 function first(req, res) {
-    const errors = inputValidation(req, res);
     let arrayData = req.body.pattern;
     let odd = [];
     let even = [];
+
+    // array validation
+    arrayValidation(res, arrayData)
 
     // check the input validation
     if (!Array.isArray(arrayData) && Number.isInteger(req.body.problem)) {
@@ -67,16 +58,6 @@ function first(req, res) {
             message: "Input type should be an array",
             status: 400
         });
-    }
-
-    // array validation
-    arrayValidation(res, arrayData)
-
-    var response = {};
-    if (!errors.isEmpty()) {
-        response.success = false;
-        response.error = errors;
-        return res.status(422).send(response);
     } else {
         arrayData.map(element => {
             // console.log("element ", element);
@@ -93,7 +74,8 @@ function first(req, res) {
         const final = evenSort.concat(oddSort)
         return res.status(400).send({
             message: final,
-            status: 200
+            status: 200,
+            problem: "Odd vs even"
         });
     }
 }
@@ -101,9 +83,11 @@ function first(req, res) {
 
 // Playing with Os and 1s
 function second(req, res) {
-    const errors = inputValidation(req, res);
-    let data = req.body.pattern;
     let array = [];
+    let data = req.body.pattern;
+
+    // array validation
+    arrayValidation(res, data)
 
     // check the input validation
     if (!Array.isArray(data) && Number.isInteger(req.body.problem)) {
@@ -111,34 +95,29 @@ function second(req, res) {
             message: "Input type should be an array",
             status: 400
         });
-    }
-
-    // array validation
-    arrayValidation(res, data)
-
-    var response = {};
-    if (!errors.isEmpty()) {
-        response.success = false;
-        response.error = errors;
-        return res.status(422).send(response);
     } else {
 
         for (let i = 0; i < data.length; i++) {
-            for (let j = 1; j > i; j++) {
+            for (let j = (i + 1); j <= (i + 1); j++) {
+                console.log(data[i]);
+                console.log(data[j]);
                 if (data[i] === 0 && data[j] !== 0) {
-                    console.log(data[i]);
-                    console.log(data[j]);
-                    data.shift();
-                    array.push(data[i]);
-                    // data[i] = data[i + 1]
+                    array.push(data[i])
                 }
-                // else {
-                //     data[i] = data[i + 1]
-                // }
-            }
+                else if (data[i] !== 0 && data[j] === 0) {
+                    array.push(data[i])
+                } else if (data[i] !== 0 && data[j] !== 0) {
+                    array.push(data[i])
+                }
+            };
         }
-        console.log("final : =>", array);
     }
+    return res.status(200).send({
+        message: array,
+        status: 200,
+        problem: "Playing with Os and 1s"
+    });
+
 }
 
 
@@ -146,8 +125,10 @@ function second(req, res) {
 function third(req, res) {
     let zeros = [];
     let nonZeros = [];
-    const errors = inputValidation(req, res);
     let data = req.body.pattern;
+
+    // array validation
+    arrayValidation(res, data)
 
     // check the input validation
     if (!Array.isArray(data) && Number.isInteger(req.body.problem)) {
@@ -155,17 +136,6 @@ function third(req, res) {
             message: "Input type should be an array",
             status: 400
         });
-    }
-
-    // array validation
-    arrayValidation(res, data)
-
-    // create object
-    var response = {};
-    if (!errors.isEmpty()) {
-        response.success = false;
-        response.error = errors;
-        return res.status(500).send(response);
     } else {
         data.forEach(element => {
             if (element === 0) {
@@ -177,14 +147,13 @@ function third(req, res) {
 
         // Calling sorting logic
         const afterSort = sortingData(nonZeros)
-        console.log(afterSort);
-
 
         // sort the non zeros element and then concat with zeros
         const finalResult = afterSort.concat(zeros);
         return res.status(200).send({
             message: finalResult,
-            status: 200
+            status: 200,
+            problem: "An interesting sort"
         });
     }
 }
@@ -192,7 +161,6 @@ function third(req, res) {
 
 // Binay form & Palindrome or not
 function forth(req, res) {
-    const errors = inputValidation(req, res);
     let number = req.body.pattern;
 
     // check the input validations
@@ -201,15 +169,6 @@ function forth(req, res) {
             message: "Please provide only number not in array",
             status: 400
         });
-    }
-    let response = {};
-
-    // error handle
-    if (!errors.isEmpty()) {
-        response.success = false;
-        response.error = errors;
-        // return res.status(422).send(response);
-        res.status(500).json({ errors: errors.array()[0].msg })
     } else {
         let arr = [];
         let i = 0;
@@ -221,7 +180,7 @@ function forth(req, res) {
             arr[i] = number % 2;
             revbinary = arr[i] + revbinary;
             number = Math.floor(number / 2);
-            i++
+            i++;
         } while (revbinary.length < 7) {
             revbinary = '0' + revbinary;
         }
@@ -231,9 +190,30 @@ function forth(req, res) {
         const result = `${revbinary}, ${palCheck ? 'Yes' : 'NO'}`;
         return res.status(200).send({
             message: result,
-            status: 200
+            status: 200,
+            problem: "Binay form & Palindrome or not"
         });
     }
+}
+
+
+
+// default pattern
+function defaultVal(req, res) {
+    const errors = inputValidation(req, res);
+
+    // create a object which will attached all the values
+    let response = {};
+    if (!errors.isEmpty()) {
+        response.success = false;
+        response.error = errors;
+        return res.status(500).send(response);
+    }
+
+    response.status = 200;
+    response.success = false;
+    response.withMessage = 'Please provide one valid problem statements in numeric format (Eg => 1,2,3 or 4)'
+    return res.status(200).send(response);
 }
 
 // check palindrome
@@ -253,9 +233,9 @@ function palindrome(number) {
 
 // sorting data
 function sortingData(nonZeros) {
-    var temp;
-    for (var i = 0; i < nonZeros.length; i++) {
-        for (var j = i; j > 0; j--) {
+    let temp;
+    for (let i = 0; i < nonZeros.length; i++) {
+        for (let j = i; j > 0; j--) {
             /*
              if arr1[j] < arr1[j - 1], then swapping
             */
@@ -276,27 +256,9 @@ function arrayValidation(res, data) {
     for (let i = 0; i < data.length; i++) {
         if (!Number.isInteger(data[i])) {
             return res.status(400).send({
-                message: "Please provide only numbers in array"
+                message: "Please provide only numbers in array",
+                status: 400
             })
         }
     }
-}
-
-
-// default pattern
-function defaultVal(req, res) {
-    const errors = inputValidation(req, res);
-    console.log("default");
-    // create a object which will attached all the values
-    var response = {};
-    if (!errors.isEmpty()) {
-        response.success = false;
-        response.error = errors;
-        return res.status(500).send(response);
-    }
-
-    response.status = 200;
-    response.success = false;
-    response.withMessage = 'Please provide one valid problem statements in numeric format (Eg => 1,2,3 or 4)'
-    return res.status(200).send(response);
 }
