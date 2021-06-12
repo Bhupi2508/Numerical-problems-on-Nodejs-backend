@@ -1,110 +1,27 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val) {
- *     this.val = val;
- *     this.next = null;
- * }
+ * @param {string} version1
+ * @param {string} version2
+ * @return {number}
  */
-
-/**
- * because there is an intersection btw two linkedlists, first align the head of longer list with
- * the shorter one's head. Then just keep moving the heads of both linkedlists
- * @param {ListNode} headA
- * @param {ListNode} headB
- * @return {ListNode}
- */
-var getIntersectionNode = function(headA, headB) {
-    var lenA = getLength(headA);
-    var lenB = getLength(headB);
-
-    while(lenA < lenB) {
-        headB = headB.next;
-        lenB--;
+var compareVersion = function(version1, version2) {
+    var versionOne = version1.split('.');
+    var versionTwo = version2.split('.');
+    if (versionOne.length <= versionTwo.length) {
+        for (var i = versionOne.length; i < versionTwo.length; i++) {
+            versionOne[i] = '0';
+         }
+    }
+    if (versionTwo.length < versionOne.length) {
+        for (var i = versionTwo.length; i < versionOne.length; i++) {
+            versionTwo[i] = '0';
+         }
     }
 
-    while(lenB < lenA) {
-        headA = headA.next;
-        lenA--;
+    for (var i = 0; i < versionOne.length; i++) {
+        var versionOneInt = parseInt(versionOne[i]);
+        var versionTwoInt = parseInt(versionTwo[i])
+        if (versionOneInt < versionTwoInt) return -1;
+        if (versionOneInt > versionTwoInt) return 1;
     }
-
-    while(headA !== headB) {
-        headA = headA.next;
-        headB = headB.next;
-    }
-
-    return headA;
-
-};
-
-var getLength = function(listHead) {
-    var length = 0;
-    while (listHead) {
-        length++;
-        listHead = listHead.next;
-    }
-    return length;
-};
-
-// 2nd try without knowing the length
-var getIntersectionNode = function(headA, headB) {
-    var intersection = null;
-    var pa = headA;
-    var pb = headB;
-
-    if (!pa || !pb) {
-        return intersection;
-    }
-
-    while (pa || pb) {
-        if (pa && pb && pa.val === pb.val) {
-            intersection = pa;
-        }
-
-        // this can be replace by pa === pb
-        while (pa && pb && pa.val === pb.val) {
-            pa = pa.next;
-            pb = pb.next;
-        }
-
-        if (pa === null && pb === null) {
-            break;
-        } else if (pa === null) {
-            pa = headB;
-        } else if (pb === null) {
-            pb = headA;
-        } else {
-            pa = pa.next;
-            pb = pb.next;
-        }
-    }
-
-    return intersection;
-};
-
-// more concise version,  compared to version 2
-var getIntersectionNode = function(headA, headB) {
-    var pa = headA;
-    var pb = headB;
-
-    if (!pa || !pb) {
-        return null;
-    }
-
-    while (pa && pb && pa !== pb) {
-        pa = pa.next;
-        pb = pb.next;
-        if (pa === pb) {
-           return pa;
-        }
-
-        if (!pa) {
-            pa = headB;
-        }
-
-        if (!pb) {
-            pb = headA;
-        }
-    }
-
-    return pa;
+    return 0;
 };
