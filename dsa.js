@@ -1,14 +1,20 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * @param {number} num
+ * @return {boolean}
  */
-var removeDuplicates = function(nums) {
-    var start = 0;
-    for (var i = 0; i < nums.length; i++) {
-        if (nums[start] !== nums[i]) {
-            start++;
-            nums[start] = nums[i];
-        }
+var isUgly = function(num) {
+  if (num <= 0)  return false; 
+  while (num > 1) {
+    if (num % 2 === 0) {
+      num /= 2;
+    } else if (num % 3 === 0) {
+      num /= 3;
+    } else if (num % 5 === 0) {
+      num /= 5;
+      continue;
+    } else {
+      return false;
     }
-    return start + 1;
+  }
+  return true;
 };
