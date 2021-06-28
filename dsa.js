@@ -1,34 +1,17 @@
 /**
- * Definition for a binary tree node.
- * function TreeNode(val) {
+ * Definition for singly-linked list.
+ * function ListNode(val) {
  *     this.val = val;
- *     this.left = this.right = null;
+ *     this.next = null;
  * }
  */
 /**
- * @param {TreeNode} root
- * @param {TreeNode} p
- * @param {TreeNode} q
- * @return {TreeNode}
+ * @param {ListNode} node
+ * @return {void} Do not return anything, modify node in-place instead.
  */
-var lowestCommonAncestor = function(root, p, q) {
-  if (root.val > p.val && root.val < q.val) {
-    return root;
-  } else if (p.val > root.val && q.val > root.val) {
-    return lowestCommonAncestor(root.right, p, q);
-  } else if (p.val < root.val && q.val < root.val) {
-    return lowestCommonAncestor(root.left, p, q);
+var deleteNode = function(node) {
+  if (node.next !== null) {
+    node.val = node.next.val;
+    node.next = node.next.next;
   }
-
-  return root;
-};
-
-// or like this? ✅
-var lowestCommonAncestor = function(root, p, q) {
-  if (p.val > root.val && q.val > root.val) {
-    return lowestCommonAncestor(root.right, p, q);
-  } else if (p.val < root.val && q.val < root.val) {
-    return lowestCommonAncestor(root.left, p, q);
-  }
-  return root;
 };
