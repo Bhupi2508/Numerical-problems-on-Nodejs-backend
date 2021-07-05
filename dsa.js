@@ -6,13 +6,15 @@
  * }
  */
 /**
- * very fast 111ms
  * @param {TreeNode} root
- * @return {number}
+ * @param {number} sum
+ * @return {boolean}
  */
-var minDepth = function(root) {
-    if (!root) return 0;
-    if (!root.left) return minDepth(root.right) + 1;
-    if (!root.right) return minDepth(root.left) + 1;
-    return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+// recursion
+var hasPathSum = function(root, sum) {
+    if (!root) return false;
+    if (root.val === sum && !root.left && !root.right) return true;
+    if (hasPathSum(root.left, sum - root.val)) return true;
+    if (hasPathSum(root.right, sum - root.val)) return true;
+    return false;
 };
