@@ -1,53 +1,57 @@
 /**
- * @param {number} n
- * @return {number}
+ * A simply solution but not efficient consider every character of ‘str1′ and
+ * check if all occurrences of it map to same character occurrences in ‘str2′.
+ * Time complexity of this solution is O(n*n).
+ *
+ * This is a better solution (NOT ACCEPTED, Time limit exceeded).
+ * 1. check if t[i] is in the map. If yes, find out the key associated with t[i]
+ * if key exists, but s[i] is not equal to key, return false;
+ * if key is null, but s[i] exists in the map and map[s[i]] is not equal to t[i]
+ * return false.
+ *
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
  */
-var countPrimes = function(n) {
-    var count = 0;
-    for (var i = 1; i < n; i++) {
-        if (isPrime(i)) count++;
-    }
-    return count;
+var isIsomorphic = function(s, t) {
+  var map = {};
+  for (var i = 0; i < s.length; i++) {
+      var key = map.getKeyByValue(t[i]);
+      if (key && s[i] !== key) {
+          return false;
+      } else if (s[i] in map) {
+          if (map[s[i]] !== t[i]) {
+              return false;
+          }
+      } else {
+          map[s[i]] = t[i];
+      }
+  }
+  return true;
 };
 
-// traditional approach, to determine a number is prime or not,
-// only need to consider factors up to √n
-var isPrime = function(num) {
-    if (num <= 1) return false;
-    // Loop's ending condition is i * i <= num instead of i <= sqrt(num)
-    // to avoid repeatedly calling an expensive function sqrt().
-    for (var i = 2; i * i <= num; i++) {
-        if (num % i == 0) return false;
-    }
-    return true;
+Object.prototype.getKeyByValue = function(value) {
+  for (var prop in this) {
+      if (this.hasOwnProperty(prop)) {
+          if (this[prop] === value)
+              return prop;
+      }
+  }
 };
 
+// a better solution, use array
+var isIsomorphic = function(s, t) {
+    var arrS = [],
+        arrT = [];
 
-/**
- * A better solution using Sieve of Eratosthenes
- * if the current number is p,
- * mark off multiples of p starting at p^2, then in increments of p: p^2 + p, p^2 + 2p, ...
- * these above numbers are not prime numbers
- * 
- * @param {number} n
- * @return {number}
- */
-var countPrimes = function(n) {
-    var count = 0;
-    var isPrime = [];
-    for (var i = 2; i < n; i++) isPrime[i] = true;
-    for (var i = 2; i * i < n; i++) {
-        if (isPrime[i]) {
-            var start = i * i;
-            while (start <= n) {
-                isPrime[start] = false;
-                start = start + i;
-            }
+    for (var i = 0; i < s.length; i++) {
+        if (arrS[s.charCodeAt(i)] !== arrT[t.charCodeAt(i)]) {
+            return false;
         }
-    }
-    for (var j = 2; j < n; j++) {
-        if (isPrime[j]) count++;
+
+        arrS[s.charCodeAt(i)] = i;
+        arrT[t.charCodeAt(i)] = i;
     }
 
-    return count;
+    return true;
 };
