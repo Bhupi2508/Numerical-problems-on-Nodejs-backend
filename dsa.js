@@ -1,66 +1,25 @@
 /**
- * @param {string} s
+ * @param {number} n
  * @return {boolean}
  */
-var isValid = function(s) {
-    var stack = [];
-    for (var i = 0; i < s.length; i++) {
-        if (s[i] === '(' || s[i] === '[' || s[i] === '{') {
-            stack.push(s[i]);
-        }
-
-        if (s[i] === ')') {
-            if (stack[stack.length - 1] !== '(') return false;
-            else stack.pop()
-        }
-
-        if (s[i] === ']') {
-            if (stack[stack.length - 1] !== '[') return false;
-            else stack.pop();
-        }
-
-        if (s[i] === '}') {
-            if (stack[stack.length - 1] !== '{') return false;
-            else stack.pop();
-        }
+var isHappy = function(n) {
+    var squareSums = [n];
+    while (n !== 1) {
+        n = squareSum(n);
+        // check this square sum num exists or not.
+        var isSquareSumApeared = squareSums.indexOf(n) > -1;
+        if (isSquareSumApeared) return false;
+        squareSums.push(n);
     }
-
-    return stack.length === 0;
+    return true;
 };
 
-// second try
-var isValid = function(s) {
-    var stack = [];
-
-    s.split('').forEach(function(char) {
-       if (char === '(' || char === '{' || char === '[') {
-           stack.push(char);
-       }
-
-       if (char === ')') {
-           if (stack.length > 0 && stack[stack.length - 1] === '(') {
-               stack.pop();
-           } else {
-               stack.push(char);
-           }
-       }
-
-       if (char === ']') {
-           if (stack.length > 0 && stack[stack.length - 1] === '[') {
-               stack.pop();
-           } else {
-               stack.push(char);
-           }
-       }
-
-       if (char === '}') {
-           if (stack.length > 0 && stack[stack.length - 1] === '{') {
-               stack.pop();
-           } else {
-               stack.push(char);
-           }
-       }
-    });
-
-    return stack.length === 0;
-};
+var squareSum = function(n) {
+    var sum = 0;
+    while (n > 0) {
+        var lastDigit = n % 10;
+        sum += lastDigit * lastDigit;
+        n = Math.floor(n / 10);
+    }
+    return sum;
+}
