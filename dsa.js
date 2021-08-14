@@ -3,59 +3,54 @@
  * @param {number[]} nums2
  * @return {number[]}
  */
-// use hashset idea, O(N)
-var intersection = function(nums1, nums2) {
-    // Note ES5 doesn't have set
-    var set1 = new Set();
-    var interSet = new Set();
+var intersect = function(nums1, nums2) {
+    var hashMap = {};
     for (var i = 0; i < nums1.length; i++) {
-        set1.add(nums1[i]);
-    }
-
-    for (var j = 0; j < nums2.length; j++) {
-        if (set1.has(nums2[j])) {
-            interSet.add(nums2[j]);
-        }
-    }
-
-    var result = [];
-    interSet.forEach(function(item) {
-        result.push(item);
-    });
-
-    return result;
-};
-
-// solution 2: sort first. O(nlogn)
-var intersection = function(nums1, nums2) {
-    // Note ES5 doesn't have set
-    var interSet = new Set();
-    nums1.sort(comparator);
-    nums2.sort(comparator);
-    var i = 0;
-    var j = 0;
-
-    while (i < nums1.length) {
-        if (j === nums2.length) break;
-        if (nums1[i] < nums2[j]) {
-            i++;
-        } else if (nums1[i] > nums2[j]) {
-            j++;
+        if (hashMap.hasOwnProperty(nums1[i])) {
+            hashMap[nums1[i]]++;
         } else {
-            interSet.add(nums1[i]);
-            i++;
-            j++;
+            hashMap[nums1[i]] = 1;
+        }
+    }
+    var hashMap2 = {};
+    for (i = 0; i < nums2.length; i++) {
+        if (hashMap2.hasOwnProperty(nums2[i])) {
+            hashMap2[nums2[i]]++;
+        } else {
+            hashMap2[nums2[i]] = 1;
         }
     }
 
     var result = [];
-    interSet.forEach(function(item) {
-        result.push(item);
-    });
+    for (var key in hashMap) {
+        if (!hashMap2.hasOwnProperty(key)) continue;
+        var numAppears = Math.min(hashMap[key], hashMap2[key]);
+        for (i = 0; i < numAppears; i++) {
+            result.push(parseInt(key));
+        }
+    }
 
     return result;
 };
 
-var comparator = function(a, b) {
-    return a - b;
+// A better and more concise solution. One hashmap needed.
+var intersect = function(nums1, nums2) {
+    var hashMap = {};
+    for (var i = 0; i < nums1.length; i++) {
+        if (hashMap.hasOwnProperty(nums1[i])) {
+            hashMap[nums1[i]]++;
+        } else {
+            hashMap[nums1[i]] = 1;
+        }
+    }
+
+    var result = [];
+    for (i = 0; i < nums2.length; i++) {
+        if (hashMap.hasOwnProperty(nums2[i]) && hashMap[nums2[i]] > 0) {
+            result.push(nums2[i]);
+            hashMap[nums2[i]]--;
+        }
+    }
+
+    return result;
 };
