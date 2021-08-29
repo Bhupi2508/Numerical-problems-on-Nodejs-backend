@@ -1,53 +1,31 @@
 /**
- * Key: first convert str to an array
- * Two maps: 1) first map maps pattern to the string array,
- * 2) second map maps the string to pattern
- * If just use one map to map the pattern and string, different pattern[i]
- * can have same string from the string array.
+ * Key two rounds
+ * 1. first round scan to build the map (number -> appearances), if secret[i] === guess[i], bull++
+ * if it's not a bull, increase the cow appearances in the map
+ * 2. second round, skip the bull positions and compare the guess number and the map
+ * if there is a cow, cow++ and decrease the cow number from the map. if the cow number is 0
+ * that is, there is matched cow number between secrect and guess.
  *
- * @param {string} pattern
- * @param {string} str
- * @return {boolean}
+ * @param {string} secret
+ * @param {string} guess
+ * @return {string}
  */
-var wordPattern = function(pattern, str) {
-   var strArray = str.split(" ");
-   if (pattern.length !== strArray.length) return false;
-   var patternToStr = {};
-   var strToPattern = {}
-   for (var i = 0; i < pattern.length; i++) {
-       if (pattern[i] in patternToStr) {
-           if (patternToStr[pattern[i]] !== strArray[i]) {
-               return false;
-           }
-       } else if (strArray[i] in strToPattern) {
-           if (strToPattern[strArray[i]] !== pattern[i]) {
-               return false;
-           }
-       }else {
-           patternToStr[pattern[i]] = strArray[i];
-           strToPattern[strArray[i]] = pattern[i];
-       }
-   }
+var getHint = function(secret, guess) {
+    var secretMap = {};
+    var cow = 0;
+    var bull = 0;
 
-   return true;
-};
-
-// same as first solution, just a bit concise, 80ms
-var wordPattern = function(pattern, str) {
-    var strArray = str.split(" ");
-    if (pattern.length !== strArray.length) return false;
-    var patternToStr = {};
-    var strToPattern = {}
-    for (var i = 0; i < pattern.length; i++) {
-        if (patternToStr[pattern[i]] && (patternToStr[pattern[i]] !== strArray[i])) {
-            return false;
-        } else if (strToPattern[strArray[i]] && (strToPattern[strArray[i]] !== pattern[i])) {
-            return false;
-        } else {
-            patternToStr[pattern[i]] = strArray[i];
-            strToPattern[strArray[i]] = pattern[i];
+    for (var i = 0; i < secret.length; i++) {
+        if (secret[i] === guess[i]) bull++;
+        else if (secretMap[secret[i]]) secretMap[secret[i]]++;
+        else secretMap[secret[i]] = 1;
+    }
+    for (var j = 0; j < guess.length; j++) {
+        if (guess[j] !== secret[j] && secretMap[guess[j]]) {
+            cow++;
+            secretMap[guess[j]]--;
         }
     }
 
-    return true;
+    return bull + 'A' + cow + 'B';
 };
