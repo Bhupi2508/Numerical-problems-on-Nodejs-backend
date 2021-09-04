@@ -1,25 +1,29 @@
 /**
- * @param {number} n
- * @return {boolean}
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
  */
-var isHappy = function(n) {
-    var squareSums = [n];
-    while (n !== 1) {
-        n = squareSum(n);
-        // check this square sum num exists or not.
-        var isSquareSumApeared = squareSums.indexOf(n) > -1;
-        if (isSquareSumApeared) return false;
-        squareSums.push(n);
+/**
+ * Key: set a prev pointer to track the previous node
+ * if the first node has the value val, delete it first,
+ * then move head to next head.
+ *
+ * @param {ListNode} head
+ * @param {number} val
+ * @return {ListNode}
+ */
+var removeElements = function(head, val) {
+    if (!head) return null;
+    while (head && head.val === val) head = head.next;
+    var headCopy = head;
+    var prev = head;
+    while (head) {
+        head = head.next;
+        if (head && head.val === val) prev.next = head.next;
+        else prev = head;
     }
-    return true;
-};
 
-var squareSum = function(n) {
-    var sum = 0;
-    while (n > 0) {
-        var lastDigit = n % 10;
-        sum += lastDigit * lastDigit;
-        n = Math.floor(n / 10);
-    }
-    return sum;
-}
+    return headCopy;
+};
