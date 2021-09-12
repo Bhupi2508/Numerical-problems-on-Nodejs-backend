@@ -1,41 +1,28 @@
 /**
- * @param {number[]} nums1
- * @param {number} m
- * @param {number[]} nums2
- * @param {number} n
- * @return {void} Do not return anything, modify nums1 in-place instead.
+ * @param {number} x
+ * @return {boolean}
  */
-// too slow?
-var merge = function(nums1, m, nums2, n) {
-    var nums3 = [];
-    for (var i = 0; i < m; i++) {
-        nums3[i] = nums1[i];
+var isPalindrome = function(x) {
+    if (x < 0) return false;
+    var revX = 0;
+    var y = x;
+    while (x > 0) {
+        revX = revX * 10 + x % 10;
+        x = Math.floor(x / 10);
     }
-    for (var i = m; i < m + n; i++) {
-        nums3[i] = nums2[i - m];
-    }
-    var head1 = 0, head2 = m;
-    for (var i = 0; i < m + n; i++) {
-        if (head1 >= m) nums1[i] = nums3[head2++];
-        else if (head2 >= m + n) nums1[i] = nums3[head1++];
-        else if (nums3[head1] <= nums3[head2]) nums1[i] = nums3[head1++];
-        else nums1[i] = nums3[head2++];
-    }
+    return y === revX;
 };
 
-// without an auxiliary array, but still too slow... why?
-var merge = function(nums1, m, nums2, n) {
-    var tail1 = m - 1;
-    var tail2 = n - 1;
-    for (var i = m + n -1; i >= 0; i--) {
-        if (tail1 < 0) {
-            nums1[i] = nums2[tail2--];
-        } else if (tail2 < 0) {
-            nums1[i] = nums1[tail1--];
-        } else if (nums1[tail1] <= nums2[tail2]) {
-            nums1[i] = nums2[tail2--];
-        } else if ((nums2[tail2] < nums1[tail1])) {
-            nums1[i] = nums1[tail1--];
-        }
+// 2nd solution
+// It only needs to examine half of the number
+// just be careful if the number is has factor 10
+// also a good solution in case overflow happens
+var isPalindrome = function(x) {
+    if (x < 0 || (x !== 0 && x % 10 === 0)) return false;
+    var revX = 0;
+    while (x > revX) {
+        revX = revX * 10 + x % 10;
+        x = Math.floor(x / 10);
     }
+    return (x === revX) || (x === Math.floor(revX / 10));
 };
