@@ -1,17 +1,20 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * @param {number[]} digits
+ * @return {number[]}
  */
-var maxSubArray = function(nums) {
-    var max = nums[0];
-    var sums = [max];
-    for (var i = 1; i < nums.length; i++) {
-        // here is the key, the dynamic programming formation,
-        // sums means maximunEndingHere (at i), it is always the maxium value of
-        // current element value and the previous max plus the current element itself.
-        sums[i] = Math.max((sums[i - 1] + nums[i]), nums[i]);
-        max = Math.max(max, sums[i]);
+var plusOne = function(digits) {
+    var length = digits.length;
+    var index = length - 1;
+    while (index >= 0) {
+        if (++digits[index] < 10) break;
+        digits[index] -= 10;
+        if (index === 0) {
+            digits.unshift(1);
+            break;
+        }
+        index--;
     }
 
-    return max;
+    return digits;
+
 };
