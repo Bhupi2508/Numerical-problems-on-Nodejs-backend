@@ -1,20 +1,29 @@
 /**
- * key: use JavaScript Object to keep track the num and its index
- * REMEBER: use if (key in Obj) to check if the Obj has the key 'key'
- * @param {number[]} nums
- * @param {number} k
- * @return {boolean}
+ * Key: find the left most x, right most x, top most y, top most y,
+ * that is the overlap rectangle.
+ * @param {number} A
+ * @param {number} B
+ * @param {number} C
+ * @param {number} D
+ * @param {number} E
+ * @param {number} F
+ * @param {number} G
+ * @param {number} H
+ * @return {number}
  */
-var containsNearbyDuplicate = function(nums, k) {
-    var numIndex = {};
-    for (var i = 0; i < nums.length; i++) {
-        if (nums[i] in numIndex) {
-            if (i - numIndex[nums[i]] <= k) {
-                return true;
-            }
-        }
-        numIndex[nums[i]] = i;
+var computeArea = function(A, B, C, D, E, F, G, H) {
+    var areaA = (C-A) * (D-B);
+    var areaB = (G-E) * (H-F);
+
+    var left = Math.max(A, E);
+    var right = Math.min(C, G);
+    var top = Math.min(D, H);
+    var bottom = Math.max(B, F);
+
+    var overlapArea = 0;
+    if (right > left && top > bottom) {
+        overlapArea = (right -left) * (top - bottom);
     }
 
-    return false;
+    return areaA + areaB - overlapArea;
 };
