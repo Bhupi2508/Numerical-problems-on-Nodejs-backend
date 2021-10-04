@@ -1,29 +1,33 @@
 /**
- * @param {string} s
- * @return {number}
+ * @param {string[]} strs
+ * @return {string}
  */
-var romanToInt = function(s) {
-    var number = 0;
-    var map = {
-        'I': 1,
-        'V': 5,
-        'X': 10,
-        'L': 50,
-        'C': 100,
-        'D': 500,
-        'M': 1000
-    };
-    var length = s.length;
-
-    number = map[s[length - 1]];
-    for (var i = length - 2; i >= 0; i--) {
-        if (map[s[i]] < map[s[i + 1]]) {
-            number -= map[s[i]];
-        } else {
-            number += map[s[i]];
+var longestCommonPrefix = function(strs) {
+    if (strs.length === 0) return '';
+    var firstString = strs[0];
+    var commonLength = firstString.length;
+    for (var i = 1; i < strs.length; i++) {
+        for (var j = 0; j < commonLength; j++) {
+            if (!strs[i][j]) break;
+            if (firstString[j] !== strs[i][j]) break;
         }
+        commonLength = j;
     }
 
-    return number;
+    return firstString.substring(0, commonLength);
+};
 
+// a better way
+var longestCommonPrefix = function(strs) {
+    if (strs.length === 0) {
+        return '';
+    }
+    
+    return strs.reduce(function(pre, str) {
+        while (str.indexOf(pre) !== 0) {
+            pre = pre.slice(0, pre.length - 1); 
+        }
+        
+        return pre;
+    }, strs[0]);
 };
