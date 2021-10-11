@@ -1,52 +1,36 @@
 /**
- * @param {number} n
+ * @param {string} str
  * @return {number}
  */
-// interative
-var climbStairs = function(n) {
-    var result = 0;
-    var stepOne = 1;
-    var stepTwo = 2;
-    if (n === 1) return stepOne;
-    if (n === 2) return stepTwo;
+var myAtoi = function(str) {
+    if (str.length === 0) return 0;
+    var index = 0;
+    var sign = 1;
+    var num = 0;
+    // delete spaces before and after, trim() is a good method.
+    str = str.trim();
 
-    for (var i = 3; i <= n; i++) {
-        result = stepOne + stepTwo;
-        stepOne = stepTwo;
-        stepTwo = result;
+    // not clear from the question, the string may not begin with a sign.
+    if (str[index] === '-' ) {
+        sign = -1;
+        index++;
+    } else if (str[index] === '+' ) {
+        index++;
     }
 
-    return result;
-};
-
-// 2nd try
-var climbStairs = function(n) {
-    if (n <= 2) return n;
-    var stepOne = 1;
-    var stepTwo = 2;
-    var result;
-    for (var i = 2; i < n; i++) {
-        result = stepOne + stepTwo;
-        stepOne = stepTwo;
-        stepTwo = result;
+    for (var i = index; i < str.length; i++) {
+        if (str[i] < '0' || str[i] > '9') break;
+        num = num * 10 + parseInt(str[i]);
     }
 
-    return result;
-};
-
-// recursive, exponential complexity. Not accepted
-var climbStairs = function(n) {
-    if (n === 1) return 1;
-    if (n === 2) return 2;
-    if (n > 2) return climbStairs(n-2) + climbStairs(n-1);
-};
-
-// not optimal
-var climbStairs = function(n) {
-    var f = [1, 2];
-    for (var i = 2; i < n; i++) {
-        f[i] = f[i-1] + f[i-2];
+    // ugly here, don't how to represent the max number in JavaScript.
+    var MAXVAULE = Math.pow(2, 31) - 1;
+    if (sign === 1 && num >= MAXVAULE) {
+        return MAXVAULE;
+    }
+    if (sign === -1 && -num <= -(MAXVAULE+1)) {
+        return -(MAXVAULE+1);
     }
 
-    return f[n - 1];
+    return num * sign;
 };
