@@ -1,46 +1,17 @@
 /**
- * @param {number} n
- * @return {string[]}
+ * @param {number[]} nums
+ * @return {number}
  */
-var fizzBuzz = function(n) {
-    var res = [];
+var maxSubArray = function(nums) {
+    var max = nums[0];
+    var sums = [max];
+    for (var i = 1; i < nums.length; i++) {
+        // here is the key, the dynamic programming formation,
+        // sums means maximunEndingHere (at i), it is always the maxium value of
+        // current element value and the previous max plus the current element itself.
+        sums[i] = Math.max((sums[i - 1] + nums[i]), nums[i]);
+        max = Math.max(max, sums[i]);
+    }
 
-    for (var i = 1; i <= n; i++) {
-        if (i % 15 === 0) {
-            res.push('FizzBuzz');
-        } else if (i % 5 === 0) {
-            res.push('Buzz');
-        } else if (i % 3 === 0) {
-            res.push('Fizz');
-        } else {
-            res.push('' + i);
-        }
-     }
-
-     return res;
-};
-
-// try without %
-var fizzBuzz = function(n) {
-    var res = [];
-
-    for (var i = 1, fizz = 0, buzz = 0; i <= n; i++) {
-        fizz++;
-        buzz++;
-        if (fizz === 3 && buzz === 5) {
-            res.push('FizzBuzz');
-            fizz = 0;
-            buzz = 0;
-        } else if (buzz === 5) {
-            res.push('Buzz');
-            buzz = 0;
-        } else if (fizz === 3) {
-            res.push('Fizz');
-            fizz = 0;
-        } else {
-            res.push('' + i);
-        }
-     }
-
-     return res;
+    return max;
 };
