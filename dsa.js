@@ -1,32 +1,20 @@
 /**
- * Key: Dynamic Programming
- * add an array to track the sum of previous elements
- * sums[i] = sum[i-1] + nums[i-1];
- * sumRange[i, j] = sums[j+1] - sums[i];
- *
- * @constructor
- * @param {number[]} nums
+ * @param {number} n
+ * @return {boolean}
  */
-var NumArray = function(nums) {
-    this.sums = [0];
-    for (var i = 1; i <= nums.length; i++) {
-        this.sums[i] = this.sums[i - 1] + nums[i - 1];
+// recursive
+var isPowerOfThree = function(n) {
+    if (n === 0) return false;
+    if (n === 1) return true;
+    return n % 3 === 0 && isPowerOfThree(Math.floor(n / 3));
+};
+
+// iterative Ways
+var isPowerOfThree = function(n) {
+    if (n > 1) {
+        while (n % 3 === 0) {
+            n = Math.floor(n / 3);
+        }
     }
+    return n === 1;
 };
-
-/**
- * @param {number} i
- * @param {number} j
- * @return {number}
- */
-NumArray.prototype.sumRange = function(i, j) {
-    return this.sums[j + 1] - this.sums[i];
-};
-
-
-/**
- * Your NumArray object will be instantiated and called as such:
- * var numArray = new NumArray(nums);
- * numArray.sumRange(0, 1);
- * numArray.sumRange(0, 2);
- */
