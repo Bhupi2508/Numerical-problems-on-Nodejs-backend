@@ -1,56 +1,39 @@
 /**
- * @param {number[]} nums1
- * @param {number[]} nums2
- * @return {number[]}
+ * use one row loop and one col loop to examine all three rules
+ * row, column and sub-9-grid (the tricky part).
+ *
+ * @param {character[][]} board
+ * @return {boolean}
  */
-var intersect = function(nums1, nums2) {
-    var hashMap = {};
-    for (var i = 0; i < nums1.length; i++) {
-        if (hashMap.hasOwnProperty(nums1[i])) {
-            hashMap[nums1[i]]++;
-        } else {
-            hashMap[nums1[i]] = 1;
-        }
-    }
-    var hashMap2 = {};
-    for (i = 0; i < nums2.length; i++) {
-        if (hashMap2.hasOwnProperty(nums2[i])) {
-            hashMap2[nums2[i]]++;
-        } else {
-            hashMap2[nums2[i]] = 1;
-        }
-    }
+var isValidSudoku = function(board) {
+    if (!board || board.length !== 9 || board[0].length !== 9) return false;
 
-    var result = [];
-    for (var key in hashMap) {
-        if (!hashMap2.hasOwnProperty(key)) continue;
-        var numAppears = Math.min(hashMap[key], hashMap2[key]);
-        for (i = 0; i < numAppears; i++) {
-            result.push(parseInt(key));
-        }
-    }
+    for (var i = 0; i < board.length; i++) {
+        var row = {};
+        var col = {};
+        var grid = {};
+        for (var j = 0; j < board.length; j++) {
+            if (board[i][j] !== '.' && !(board[i][j] in row)) {
+                row[board[i][j]] = true;
+            } else if (board[i][j] !== '.' && (board[i][j] in row)) {
+                return false;
+            }
 
-    return result;
-};
+            if (board[j][i] !== '.' && !(board[j][i] in col)) {
+                col[board[j][i]] = true;
+            } else if (board[j][i] !== '.' && (board[j][i] in col)) {
+                return false;
+            }
 
-// A better and more concise solution. One hashmap needed.
-var intersect = function(nums1, nums2) {
-    var hashMap = {};
-    for (var i = 0; i < nums1.length; i++) {
-        if (hashMap.hasOwnProperty(nums1[i])) {
-            hashMap[nums1[i]]++;
-        } else {
-            hashMap[nums1[i]] = 1;
+            var rowIndex = 3 * Math.floor(i / 3) + Math.floor(j / 3);
+            var colIndex = 3 * (i % 3) + (j % 3);
+            if (board[rowIndex][colIndex] !== '.' && !(board[rowIndex][colIndex] in grid)) {
+                grid[board[rowIndex][colIndex]] = true;
+            } else if (board[rowIndex][colIndex] !== '.' && (board[rowIndex][colIndex] in grid)) {
+                return false;
+            }
         }
     }
 
-    var result = [];
-    for (i = 0; i < nums2.length; i++) {
-        if (hashMap.hasOwnProperty(nums2[i]) && hashMap[nums2[i]] > 0) {
-            result.push(nums2[i]);
-            hashMap[nums2[i]]--;
-        }
-    }
-
-    return result;
+    return true;
 };
