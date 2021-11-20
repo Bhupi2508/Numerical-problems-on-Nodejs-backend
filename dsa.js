@@ -1,36 +1,20 @@
 /**
- * this question is super easy, 80ms used
- * @constructor
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
  */
-var Stack = function() {
-  this.stack = [];
-};
-
 /**
- * @param {number} x
- * @returns {void}
+ * @param {TreeNode} root
+ * @return {TreeNode}
  */
-Stack.prototype.push = function(x) {
-    this.stack.push(x);
-};
-
-/**
- * @returns {void}
- */
-Stack.prototype.pop = function() {
-    this.stack.pop();
-};
-
-/**
- * @returns {number}
- */
-Stack.prototype.top = function() {
-    return this.stack[this.stack.length - 1];
-};
-
-/**
- * @returns {boolean}
- */
-Stack.prototype.empty = function() {
-    return this.stack.length === 0;
+var invertTree = function(root) {
+  if (root === null) { return null; }
+  var node = root.left;
+  root.left = root.right;
+  root.right = node;
+  if (root.left) { invertTree(root.left); }
+  if (root.right) { invertTree(root.right); }
+  return root;
 };
