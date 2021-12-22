@@ -1,42 +1,34 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val) {
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
  *     this.val = val;
- *     this.next = null;
+ *     this.left = this.right = null;
  * }
  */
 /**
- * Key: find the middle of the list first
- * reverse the second half and then compare it with first half
- * @param {ListNode} head
- * @return {boolean}
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
  */
-var isPalindrome = function(head) {
-    if (!head || !head.next) return true;
-    var fastHead = head;
-    var slowHead = head;
-    while (fastHead.next && fastHead.next.next) {
-        slowHead = slowHead.next;
-        fastHead = fastHead.next.next;
-    }
+var lowestCommonAncestor = function(root, p, q) {
+  if (root.val > p.val && root.val < q.val) {
+    return root;
+  } else if (p.val > root.val && q.val > root.val) {
+    return lowestCommonAncestor(root.right, p, q);
+  } else if (p.val < root.val && q.val < root.val) {
+    return lowestCommonAncestor(root.left, p, q);
+  }
 
-    // reverse the scond half
-    var center = slowHead.next;
-    var centerNext = center.next;
-    slowHead.next = null;
-    center.next = null;
-    while (centerNext) {
-        var tmp = centerNext.next;
-        centerNext.next = center;
-        center = centerNext;
-        centerNext = tmp;
-    }
+  return root;
+};
 
-    while (head && center) {
-        if (head.val !== center.val) return false;
-        head = head.next;
-        center = center.next;
-    }
-
-    return true;
+// or like this? ✅
+var lowestCommonAncestor = function(root, p, q) {
+  if (p.val > root.val && q.val > root.val) {
+    return lowestCommonAncestor(root.right, p, q);
+  } else if (p.val < root.val && q.val < root.val) {
+    return lowestCommonAncestor(root.left, p, q);
+  }
+  return root;
 };
