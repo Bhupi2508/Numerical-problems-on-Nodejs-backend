@@ -1,14 +1,16 @@
 /**
- * the key is to use bit AND &, after AND 1, only the last bit is reseved.
  * @param {number} n - a positive integer
- * @return {number} - a positive integer
+ * @return {number}
  */
-var reverseBits = function(n) {
-    var result = 0;
-    for (var i = 0; i < 32; i++) {
-        var lastBit = n & 1;
-        result += lastBit * Math.pow(2, 31 - i);
-        n >>= 1;
+var hammingWeight = function(n) {
+  var counts = 0;
+  while (n > 0) {
+    if (n & 1 === 1) {
+      counts++;
     }
-    return result;
+    // be careful to use >>> instead of >>
+    // in JavaScript, >> is used for signed numbers, >>> is used for unsigned numbers
+    n >>>= 1;
+  }
+  return counts;
 };
