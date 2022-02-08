@@ -1,20 +1,18 @@
 /**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
+ * @param {number} numRows
+ * @return {number[][]}
  */
-/**
- * @param {TreeNode} root
- * @param {number} sum
- * @return {boolean}
- */
-// recursion
-var hasPathSum = function(root, sum) {
-    if (!root) return false;
-    if (root.val === sum && !root.left && !root.right) return true;
-    if (hasPathSum(root.left, sum - root.val)) return true;
-    if (hasPathSum(root.right, sum - root.val)) return true;
-    return false;
-};
+ var generate = function(numRows) {
+    if (numRows === 0) return [];
+    var result = [[1]];
+    for (var i = 1; i < numRows; i++) {
+        var preRow = result[i - 1];
+        var newRow = [1];
+        for (var j = 1; j < i; j++) {
+          newRow[j] = preRow[j-1] + preRow[j];
+        }
+        newRow.push(1);
+        result.push(newRow);
+    }
+    return result;
+ };
