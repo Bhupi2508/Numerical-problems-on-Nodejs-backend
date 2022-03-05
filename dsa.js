@@ -1,20 +1,29 @@
 /**
- * @param {TreeNode} root
- * @return {number[][]}
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
  */
-var levelOrderBottom = function(root) {
-    var results = [];
-    helper(root, 0, results);
-    return results;
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+    if (!root) return true;
+    if (getHeight(root) === -1) return false;
+    return true;
 };
 
-var helper = function(node, level, results) {
-    if (!node) return results;
-    if (level >= results.length) {
-        // insert level result array reversely
-        results.unshift([]);
-    }
-    results[results.length - level - 1].push(node.val);
-    helper(node.left, level + 1, results);
-    helper(node.right, level + 1, results);
-};
+var getHeight = function(root) {
+    if (!root) return 0;
+    var leftHeight = getHeight(root.left);
+    if (leftHeight === -1) return -1;
+    var rightHeight = getHeight(root.right);
+    if (rightHeight === -1) return -1;
+    if (leftHeight === -1 || rightHeight === -1) return -1;
+    var heightDiff = Math.abs(leftHeight - rightHeight);
+    if (heightDiff > 1) return -1;
+
+    return Math.max(leftHeight, rightHeight) + 1;
+}
