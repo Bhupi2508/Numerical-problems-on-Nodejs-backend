@@ -6,45 +6,25 @@
  * }
  */
 /**
- * @param {ListNode} head
+ * @param {ListNode} l1
+ * @param {ListNode} l2
  * @return {ListNode}
  */
-// Iterative way
-var reverseList = function(head) {
-  if (head === null || head.next === null)  return head;
-  var headNext = head.next;
-  head.next = null;
-  while (head !== null && headNext !== null) {
-    // keep a reference of the headNext's next node
-    var tmp = headNext.next;
-    headNext.next = head;
-    head = headNext;
-    headNext = tmp;
-  }
-
-  return head;
-};
-
-// a more concise solution, prevHead eventually wll be the reversed list head
-var reverseList = function(head) {
-    var prevHead = null;
-    while (head) {
-        var headNext = head.next;
-        head.next = prevHead;
-        prevHead = head;
-        head = headNext;
+var mergeTwoLists = function(l1, l2) {
+    var l3 = new ListNode();
+    var l3Head = l3;
+    while (l1 && l2) {
+        if (l1.val <= l2.val ) {
+            l3.next = l1;
+            l1 = l1.next;
+        } else {
+            l3.next = l2;
+            l2 = l2.next;
+        }
+        l3 = l3.next;
     }
-    return prevHead;
-};
+    if (!l1) l3.next = l2;
+    if (!l2) l3.next = l1
 
-// recursive way
-var reverseList = function(head) {
-  if (head === null || head.next === null)  return head;
-  var headNext = head.next;
-  head.next = null;
-  var nextReversedListHead = reverseList(headNext);
-  // now headNext is the last node of the reversed List on the right of head!!!
-  headNext.next = head;
-
-  return nextReversedListHead;
+    return l3Head.next;
 };
