@@ -1,30 +1,36 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val) {
- *     this.val = val;
- *     this.next = null;
- * }
+ * @param {number} num
+ * @return {boolean}
  */
-/**
- * @param {ListNode} head
- * @return {ListNode}
- */
-// O(1) space O(n) complexity
-var oddEvenList = function(head) {
-    if (head === null) {
-        return head;
-    }
-    var oddHead = head;
-    var even = head.next, evenHead = head.next;
-    while (true) {
-        if (oddHead.next === null || evenHead.next === null) {
-            oddHead.next = even;
-            break;
+var isPowerOfFour = function(num) {
+    if (num > 1) {
+        while (num % 4 === 0) {
+            num = Math.floor(num / 4);
         }
-        oddHead.next = evenHead.next;
-        oddHead = oddHead.next;
-        evenHead.next = oddHead.next;
-        evenHead = evenHead.next;
     }
-    return head;
+    return num === 1;
+};
+
+var isPowerOfFour = function(num) {
+    if (num > 1) {
+        if ((num & (num - 1)) === 0) {
+            if ((num - 1) % 3 === 0) {
+                return true;
+            }
+        }
+    }
+    return num === 1;
+};
+
+// the '1' bit only appears at odd bit, so if any every 3 bits (=5) has 1, it is
+// a number of power of 4
+var isPowerOfFour = function(num) {
+    if (num > 1) {
+        if ((num & (num - 1)) === 0) {
+            if ((num & 0x55555555) !== 0) {
+                return true;
+            }
+        }
+    }
+    return num === 1;
 };
