@@ -1,24 +1,32 @@
 /**
- * @param {string} haystack
- * @param {string} needle
- * @return {number}
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
  */
-var strStr = function(haystack, needle) {
-    var hIndex = 0;
-    while ((haystack.length - hIndex) >= needle.length) {
-        var nIndex = 0;
-        if (haystack[hIndex] === needle[nIndex]) {
-            while (nIndex < needle.length) {
-                if (haystack[hIndex + nIndex] !== needle[nIndex]) break;
-                nIndex++;
-            }
-        }
-        if (nIndex === needle.length) break;
-        else hIndex++;
+var moveZeroes = function(nums) {
+  var i = 0, j = nums.length;
+  while (i < j) {
+    if (nums[i] === 0) {
+      nums.splice(i, 1);
+      nums.push(0);
+      j--;
+    } else {
+      i++;
     }
-
-    if ((haystack.length - hIndex) < needle.length) return -1;
-    return hIndex;
+  }
 };
 
-// a better solution? KMP?
+// two pointers
+var moveZeroes = function(nums) {
+    var newStart = 0;
+    for (var i = 0; i < nums.length; i++) {
+        if (nums[i] !== 0) {
+            nums[newStart] = nums[i];
+            newStart++;
+        }
+    }
+
+    while (newStart < nums.length) {
+        nums[newStart] = 0;
+        newStart++;
+    }
+};
