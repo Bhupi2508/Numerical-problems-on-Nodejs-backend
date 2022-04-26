@@ -1,17 +1,17 @@
 /**
- * calculate the element in reverse, resultRow[i] += resultRow[i-1]
- * we don't have to keep resultRow[i] if we do it from back to start.
- * @param {number} rowIndex
- * @return {number[]}
+ * Key: use regular expression to find only alpha and numeric letters.
+ * Two pointers: start and end
+ *
+ * @param {string} s
+ * @return {boolean}
  */
-var getRow = function(rowIndex) {
-    var resultRow = [1];
-    for (var i = 1; i <= rowIndex; i++) {
-        for (var j = i - 1; j > 0; j--) {
-            resultRow[j] += resultRow[j - 1];
-        }
-        resultRow.push(1);
+var isPalindrome = function(s) {
+    var pattern = /[a-z0-9]/gi;
+    s = s.match(pattern);
+    if (!s || s.length === 1) return true;
+    for (var i = 0; i < s.length / 2; i++) {
+        if (s[i].toLowerCase() !== s[s.length - 1 - i].toLowerCase()) return false;
     }
 
-    return resultRow;
+    return true;
 };
