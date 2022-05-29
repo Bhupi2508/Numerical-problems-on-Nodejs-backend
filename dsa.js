@@ -1,18 +1,17 @@
 /**
- * @param {number} numRows
- * @return {number[][]}
+ * calculate the element in reverse, resultRow[i] += resultRow[i-1]
+ * we don't have to keep resultRow[i] if we do it from back to start.
+ * @param {number} rowIndex
+ * @return {number[]}
  */
- var generate = function(numRows) {
-    if (numRows === 0) return [];
-    var result = [[1]];
-    for (var i = 1; i < numRows; i++) {
-        var preRow = result[i - 1];
-        var newRow = [1];
-        for (var j = 1; j < i; j++) {
-          newRow[j] = preRow[j-1] + preRow[j];
+var getRow = function(rowIndex) {
+    var resultRow = [1];
+    for (var i = 1; i <= rowIndex; i++) {
+        for (var j = i - 1; j > 0; j--) {
+            resultRow[j] += resultRow[j - 1];
         }
-        newRow.push(1);
-        result.push(newRow);
+        resultRow.push(1);
     }
-    return result;
- };
+
+    return resultRow;
+};
