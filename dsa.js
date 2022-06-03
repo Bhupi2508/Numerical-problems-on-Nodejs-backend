@@ -1,29 +1,36 @@
 /**
- * Key: find the left most x, right most x, top most y, top most y,
- * that is the overlap rectangle.
- * @param {number} A
- * @param {number} B
- * @param {number} C
- * @param {number} D
- * @param {number} E
- * @param {number} F
- * @param {number} G
- * @param {number} H
- * @return {number}
+ * this question is super easy, 80ms used
+ * @constructor
  */
-var computeArea = function(A, B, C, D, E, F, G, H) {
-    var areaA = (C-A) * (D-B);
-    var areaB = (G-E) * (H-F);
+var Stack = function() {
+  this.stack = [];
+};
 
-    var left = Math.max(A, E);
-    var right = Math.min(C, G);
-    var top = Math.min(D, H);
-    var bottom = Math.max(B, F);
+/**
+ * @param {number} x
+ * @returns {void}
+ */
+Stack.prototype.push = function(x) {
+    this.stack.push(x);
+};
 
-    var overlapArea = 0;
-    if (right > left && top > bottom) {
-        overlapArea = (right -left) * (top - bottom);
-    }
+/**
+ * @returns {void}
+ */
+Stack.prototype.pop = function() {
+    this.stack.pop();
+};
 
-    return areaA + areaB - overlapArea;
+/**
+ * @returns {number}
+ */
+Stack.prototype.top = function() {
+    return this.stack[this.stack.length - 1];
+};
+
+/**
+ * @returns {boolean}
+ */
+Stack.prototype.empty = function() {
+    return this.stack.length === 0;
 };
