@@ -1,22 +1,32 @@
 /**
- * @param {string} s
- * @param {string} t
- * @return {boolean}
- */
-// remember: anagram also requires the appearance of the letter in both strings is same.
-var isAnagram = function(s, t) {
-    var letterCount = {};
-    for (var i = 0; i < s.length; i++) {
-       if (letterCount[s[i]]) letterCount[s[i]]++;
-       else letterCount[s[i]] = 1;
-    }
-    for (var i = 0; i < t.length; i++) {
-       if (letterCount[t[i]]) letterCount[t[i]]--;
-       else letterCount[t[i]] = 1;
-    }
-    for (var key in letterCount) {
-        if (letterCount[key] > 0) return false;
+* question: http://www.programcreek.com/2014/08/leetcode-shortest-word-distance-java/
+*
+*/
+
+function shortestWordDist(words, word1, word2) {
+  var index1, index2;
+
+  return words.reduce(function(dist, word, index) {
+    if (word === word1) {
+      index1 = index;
     }
 
-    return true;
-};
+    if (word === word2) {
+      index2 = index;
+    }
+
+    if (index1 >= 0 && index2 >= 0) {
+      dist = Math.min(Math.abs(index1 - index2), dist);
+    }
+
+    return dist;
+  }, Number.MAX_VALUE);
+}
+
+// test cases
+var words = ["practice", "makes", "perfect", "coding", "makes"];
+var word1 = 'practice';
+var word2 = 'coding';
+var word3 = 'makes';
+console.log(shortestWordDist(words, word1, word2));
+console.log(shortestWordDist(words, word2, word3));
