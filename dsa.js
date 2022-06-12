@@ -1,32 +1,20 @@
 /**
-* question: http://www.programcreek.com/2014/08/leetcode-shortest-word-distance-java/
-*
-*/
+ * @param {number} num
+ * @return {number}
+ */
+var addDigits = function(num) {
+  while (num > 9) {
+    num = getTotal(num);
+  }
+  return num;
+};
 
-function shortestWordDist(words, word1, word2) {
-  var index1, index2;
-
-  return words.reduce(function(dist, word, index) {
-    if (word === word1) {
-      index1 = index;
-    }
-
-    if (word === word2) {
-      index2 = index;
-    }
-
-    if (index1 >= 0 && index2 >= 0) {
-      dist = Math.min(Math.abs(index1 - index2), dist);
-    }
-
-    return dist;
-  }, Number.MAX_VALUE);
-}
-
-// test cases
-var words = ["practice", "makes", "perfect", "coding", "makes"];
-var word1 = 'practice';
-var word2 = 'coding';
-var word3 = 'makes';
-console.log(shortestWordDist(words, word1, word2));
-console.log(shortestWordDist(words, word2, word3));
+var getTotal = function(num) {
+  var total = 0, dig = 0;
+  while (num > 9) {
+    dig = num % 10;
+    total += dig;
+    num = Math.floor(num / 10);
+  }
+  return total + num;
+};
